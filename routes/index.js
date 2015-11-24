@@ -13,6 +13,7 @@ router.get('/logout',UserController.logout);
 router.get('/profile',UserController.viewProfile);
 router.post('/profile',UserController.profile);
 router.get('/password',UserController.renderPasswordPage);
+router.post('/password',UserController.changePassword);
 
 
 

@@ -84,7 +84,7 @@ var user = function() {
                         'message': 'Sorry, We can\'t find a user!'
                     });
                 } else {
-                	doc.user = req.session.user;
+                    doc.user = req.session.user;
                     res.render('profile', doc);
                 }
             })
@@ -125,12 +125,57 @@ var user = function() {
                 res.render('profile', obj)
             })
     }
-    renderPasswordPage = function (req, res) {
-    	var obj = {};
-    	if(req.session && req.session.user) {
-			obj.user = req.session.user
-		}
-    	res.render('password',obj);
+    renderPasswordPage = function(req, res) {
+        var obj = {};
+        if (req.session && req.session.user) {
+            obj.user = req.session.user
+        }
+        res.render('password', obj);
+    }
+    changePassword = function(req, res) {
+        var obj = {};
+        obj.user = req.session.user;
+        if (req.param('password') != req.param('repassword')) {
+            obj.error = true;
+            obj.message = 'Two times the password is not consistent';
+            res.render('password', obj);
+        } else {
+            UserModel.findOne({
+                'username': req.session.user,
+                'password': req.param('currentpassword')
+            }, function(err, doc) {
+            	console.log(err);
+            	console.log(doc);
+                if (err) {
+                	obj.error = true;
+            		obj.message = 'Sorry,Something gone wrong!';
+            		res.render('password', obj);
+                } else if (doc) {
+                    UserModel.update({
+                            'username': req.session.user
+                        },
+                        {'password':req.param('password')},
+                        function(e, resultSet) {
+                            console.log(e, resultSet);
+                            if (e) {
+                                obj.error = true;
+                                obj.message = 'Sorry, Something weired!'
+                            } else {
+                            	console.log('------------1---------------')
+                                obj.success = true;
+                                obj.message = 'Successfully updated your password...';
+                            }
+                            res.render('password', obj);
+                        })
+                } else {
+                    console.log('------------11222---------------')
+                    obj.error = true;
+                    obj.message = 'Currentpassword is wrong!';
+                	res.render('password', obj);
+                }
+            })
+        }
+        
     };
     return {
         register: register,
@@ -138,7 +183,8 @@ var user = function() {
         logout: logout,
         viewProfile: viewProfile,
         profile: saveProfile,
-        renderPasswordPage: renderPasswordPage
+        renderPasswordPage: renderPasswordPage,
+        changePassword: changePassword
     }
 }();
 
