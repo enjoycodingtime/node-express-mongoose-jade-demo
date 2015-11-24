@@ -144,8 +144,6 @@ var user = function() {
                 'username': req.session.user,
                 'password': req.param('currentpassword')
             }, function(err, doc) {
-            	console.log(err);
-            	console.log(doc);
                 if (err) {
                 	obj.error = true;
             		obj.message = 'Sorry,Something gone wrong!';
@@ -156,19 +154,16 @@ var user = function() {
                         },
                         {'password':req.param('password')},
                         function(e, resultSet) {
-                            console.log(e, resultSet);
                             if (e) {
                                 obj.error = true;
                                 obj.message = 'Sorry, Something weired!'
                             } else {
-                            	console.log('------------1---------------')
                                 obj.success = true;
                                 obj.message = 'Successfully updated your password...';
                             }
                             res.render('password', obj);
                         })
                 } else {
-                    console.log('------------11222---------------')
                     obj.error = true;
                     obj.message = 'Currentpassword is wrong!';
                 	res.render('password', obj);
