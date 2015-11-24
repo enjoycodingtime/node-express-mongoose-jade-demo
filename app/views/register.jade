@@ -1,0 +1,21 @@
+extends layout
+
+block content
+
+	form.form-signin(action='/register',method='post')
+		h2.form-signin-heading.text-muted Please register
+		if email
+			input.form-control(type='text',placeholder='Email Address',name='email',value='#{email}',autofocus,required)
+			input.form-control(type='text',placeholder='Username',name='username',value='#{username}',required)
+		else
+			input.form-control(type='text',placeholder='Email Address',name='email',autofocus,required)
+			input.form-control(type='text',placeholder='Username',name='username',required)
+		input.form-control(type='password',placeholder='Password',name='password',required)
+		input.form-control(type='password',placeholder='Re-enter Password',name='repassword',required)
+		button.btn.btn-lg.btn-primary.btn-block(type='submit') Register
+	if message
+		.alert.alert-danger.alert-dismissable
+			button.close(type='button',data-dismiss='alert',aria-hidden='true') &times;
+			strong Error! #{message}
+
+

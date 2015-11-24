@@ -1,0 +1,37 @@
+doctype html
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/lib/css/bootstrap.min.css')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+	body
+		.navbar.navbar-default.navbar-fixed-top
+			.container
+				.navbar-header
+					a.navbar-brand(href='/') ITZK
+				.navbar-collapse.collapse
+					ul.nav.navbar-nav
+						li.active
+							a(href='/') Home
+					ul.nav.navbar-nav.navbar-right
+						if user
+							li.dropdown
+								a.dropdown-toggle(href='#',data-toggle="dropdown") Hi 
+									b #{user}
+									b.caret
+								ul.dropdown-menu
+									li
+										a(href='/profile') My Profile
+										a(href='/logout') Log Out
+						else
+							li
+								a(href='/register') Register
+							li
+								a(href='/login') Login
+		.container
+			.jumbotron
+				block content
+		script(src='/lib/js/jquery-2.0.3.min.js')
+		script(src='/lib/js/bootstrap.min.js')
+
+

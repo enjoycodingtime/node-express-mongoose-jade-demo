@@ -1,0 +1,13 @@
+extends layout
+
+block content
+	.container
+		form.form-signin(action='/login',method='post')
+			h2.form-signin-heading.text-muted Please login
+			input.form-control(type='text',placeholder='Email/Username',name='email',autofocus)
+			input.form-control(type='password',placeholder='Password',name='password')
+			button.btn.btn-lg.brn-primary.btn-block(type='submit') Login
+		if message
+			.alert.alert-danger.alert-dismissable
+				button.close(type='button', data-dismiss='alert',aria-hidden='true') &times;
+				strong Error! #{message}

@@ -1,0 +1,32 @@
+extends layout
+
+block content
+	.row
+		.col-md-4
+			ul.nav.navbar-nav
+				li
+					a(href='/password') Change Password
+		.col-md-8
+			.container
+				form.form-horizontal(role='form',action='/profile',method='post')
+					h2.form-signin-heading.text-muted Profile Edit
+					.form-group
+						label.col-lg-2.control-label.jumbotron-fs-deactivate(for='inputEmail1') Email
+						.col-lg-10
+							input.form-control#inputEmail1(type='email',name='email',value='#{email}',placeholde='Email Address')
+					.form-group
+						label.col-lg-2.control-label.jumbotron-fs-deactivate(for='inputUsername1') Username
+						.col-lg-10
+							input.form-control#inputUsername1(type='text',name='username',value='#{username}',placeholde='Username')
+					.form-group
+						.col-lg-offset-2.col-lg-10
+							button.btn.btn-default(type='submit') Update
+
+				if success
+					.alert.alert-success.alert-dismissable
+						button.close(type='button',data-dismiss='alert',aria-hidden='true') &times;
+						strong Success! #{message}
+				if error
+					.alert.alert-danger.alert-dismissable
+						button.close(type='button',data-dismiss='alert',aria-hidden='true') &times;
+						strong Error! #{message}
