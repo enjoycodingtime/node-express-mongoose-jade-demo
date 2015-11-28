@@ -42,7 +42,8 @@ var Users = function () {
 				]
 			},
 			hashed_password: {
-				type: String,default: ''
+				type: String,default: '',
+
 			},
 			salt:{
 				type: String,default: ''
@@ -60,6 +61,11 @@ var Users = function () {
 			.get(function () {
 				return this._password;
 			});
+		//验证密码长度必须大于6
+		userSchema.path('hashed_password').validate(function (hashed_password) {
+			return hashed_password.length && this._password.length >=6;
+		},'Password should have minimum length of 6 chars');
+
 		userSchema.methods = {
 			authenticate: function (plainText) {
 				return this.encryptPassword(plainText) === this.hashed_password;
