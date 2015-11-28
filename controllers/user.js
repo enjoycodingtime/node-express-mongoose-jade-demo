@@ -51,19 +51,26 @@ var user = function() {
                     'email': req.param('email')
                 }, {
                     'username': req.param('email')
-                }],
-                password: req.param('password')
+                }]
+
+                // password: req.param('password')
             }, function(err, doc) {
                 if (err) {
                     res.render('login', {
                         'message': 'Sorry,Something gone wrong!'
                     });
                 } else if (doc) {
-                    req.session.user = doc.username;
-                    res.redirect('/');
+                    if(!doc.authenticate(req.param('password'))){
+                        res.render('login', {
+                        'message': 'Password is wrong!'
+                        })
+                    }else{
+                        req.session.user = doc.username;
+                        res.redirect('/');
+                    }
                 } else {
                     res.render('login', {
-                        'message': 'Email/Username or password is wrong!'
+                        'message': 'Email/Username  is wrong!'
                     })
                 }
             })
@@ -101,9 +108,10 @@ var user = function() {
             function(e, resultSet) {
                 console.log(e, resultSet);
                 var obj = updateSchema;
+                obj.user = req.session.user;
                 if (e) {
+                    obj.error = true;
                     if (e.code == 11000) {
-                        obj.error = true;
                         var duplicatedValue = e.errmsg.match(/"\S*/);
                         obj.message = 'The ' + duplicatedValue[0] + ' is already taken. Please take another one!';
                     } else if (e.errors) {
