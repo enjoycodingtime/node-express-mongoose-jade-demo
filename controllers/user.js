@@ -82,6 +82,12 @@ var user = function() {
         res.redirect('/login')
     }
     viewProfile = function(req, res) {
+        if(!req.session.user) {
+            res.render('login', {
+                        'message': 'Please Login'
+            });
+            return;
+        }
         UserModel.findOne({
                 'username': req.session.user
             }, '-_id email username',
